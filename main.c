@@ -46,12 +46,14 @@ struct graphe {
 typedef struct graphe graphe;
 
 
-graphe createGraphe(int nbs) {
+StrGr createGraphe(int nbs) {
     Shu i, j, flag, num;
     float v, taux;
-    graphe g;
     ligne l, ptl;
-    g.nbs = nbs;
+    StrGr g;
+    Strand node;
+    Strand node2;
+
     /*
     srand(time(NULL));
     */
@@ -61,14 +63,59 @@ graphe createGraphe(int nbs) {
    // 2   
    // 3  
    // 4  1 0
+    g.nbs = nbs;
+    g.nbrStr = nbs * 2;
 
+    g.node = (int* ) malloc(((nbs *2) + 1) * sizeof(int));
+    size_t  a = sizeof(g.node); 
+    memset(g.node, 0, (size_t) ((nbs *2) + 1));
+
+    g.nxt = (Strand* ) malloc(((nbs *2) + 1) * sizeof(Strand));	
+	memset(g.nxt, 0, (size_t) ((nbs *2) + 1));
+    
+    g.node[0] = -0;
+	node.node = 0;
+    node.next = 0;
+    g.nxt[0] = node;
+
+    // ON OBTIENT LE NMBRE D ARETE EN MM TMPS
     int  matrix[5][2] = {{0,3},{1,2},{4,1},{4,0},{0,1}};
-    int inode = 0;
-    g.tab = (ligne * ) malloc(nbs * sizeof(ligne));
-    memset(g.tab, 0, (size_t) nbs * 8);
+    int nbarrete = 5;
+    //g.tab = (ligne * ) malloc(nbs * sizeof(ligne));
+    //memset(g.tab, 0, (size_t) nbs * 8);
 
+    int iStr = 1;
 
     for(int i = 0;i < 5;i++){
+        // first strand
+        if(g.node[matrix[i][0]] == NULL){
+            g.node[matrix[i][0]] = -iStr;
+        }else{
+            node.next =  -iStr;  //provisoire
+        }
+        node.node = matrix[i][0];
+        g.nxt[iStr] = node;
+    
+        // first strand
+        if(g.node[matrix[i][1]] == NULL){
+            g.node[matrix[i][1]] = iStr;
+        }else{
+            node2.next =  iStr;  //provisoire
+        }
+        node2.node = matrix[i][1];
+        g.nxt[iStr + nbs] = node2;
+        iStr++;
+        /*
+        g.node[iStr] = -iStr;
+        node.node = matrix[i][0];
+        node.next =  matrix[i][0];  //provisoire
+        g.nxt[iStr] = node;
+        g.node[iStr+nbs] = iStr;
+        node2.node = matrix[i][1];
+        node2.next =  matrix[i][1];  //provisoire
+        g.nxt[iStr+nbs] = node2;
+        iStr++;
+        *//*
         inode = matrix[i][0];
         l = g.tab[inode];
         ptl = (ligne) malloc(sizeof(succsom));
@@ -90,32 +137,27 @@ graphe createGraphe(int nbs) {
         else{
             g.tab[inode] = ptl;    
         }
+        */
     }
-    
+
     return g;
 }
 
-void printGraph(graphe g) {
-    Shu i, nb;
-    ligne l;
-    nb = g.nbs;
-    printf("Graphe\nLignes\n");
-    for (i = 0; i < nb; i++) {
-        l = g.tab[i];
-        printf(" %3d\t", i);
-        while (l) {
-            printf("%3u ", l -> y);
-            l = l -> nxt;
-        }
-        printf("\n");
-    }
-}
 
 void printStrGraph(StrGr g) {
     printf("\n");
-   for (int i = 0; i < 20; i++) {
+    int nbs = g.nbs;
+    int brin;
+   for (int i = 0; i < 5;i++) {
+        brin = g.node[i];
+        if(brin < 0){
+            brin = -brin;
+        }else{
+            brin += 5;
+
+        }
         printf("|%d ",g.node[i]);
-        printf("%d |",g.nxt[i].node);
+        printf("%d |",g.nxt[brin].node);
     }
 
 
@@ -125,51 +167,6 @@ void printStrGraph(StrGr g) {
 void insert(StrGr g, int num, Shu nod) {
 
 }
-
-StrGr graphToStrGr(graphe g) {
-    Shu i;
-    int nbrStr, size_str, nbz;
-    ligne l;
-    StrGr newg;
-	int nb = g.nbs;
-	nbrStr = nb * 2;
-    Strand node;
-
-	newg.node = (int* ) malloc(nbrStr *sizeof(int));
-    newg.nxt = (Strand* ) malloc(nbrStr * sizeof(Strand));
-	
-    memset(newg.node, 0, (size_t) nbrStr * sizeof(int));
-	memset(newg.nxt, 0, (size_t) nbrStr * sizeof(Strand));
-    
-    newg.nbs = 10;
-    newg.nbrStr = 10 * 2;
-    
-    newg.node[0] = -0;
-	node.node = 0;
-    node.next = 0;
-    newg.nxt[0] = node;
-	printf("%d s\n",newg.nxt[0].node);
-
-	int int_brin = 1;
-	printf("Transformation\n");
-    for (i = 0; i < nb; i++) {
-        l = g.tab[i];
-		newg.node[int_brin] = -int_brin;
-		node.node = i+ 1;
-        node.next = i+1;
-        newg.nxt[int_brin] = node;
-        while (l) {
-            newg.node[int_brin + nb] = int_brin;
-            node.node = l->y;
-            node.next = i;
-		    newg.nxt[int_brin + nb] = node;            
-            int_brin++;
-            l = l -> nxt;
-        }
-    }
-    return newg;
-}
-
 
 
 void seegr(StrGr g) {
@@ -184,26 +181,6 @@ void seegr(StrGr g) {
     printf("\n");
 }
 
-int path(Shu dep, Shu arr, graphe g, Shu flag[]) {
-    Shu new;
-    ligne l;
-    if (dep == arr) {
-        flag[dep] = 1;
-        return 1;
-    }
-    if (flag[dep])
-        return 0;
-    l = g.tab[dep];
-    flag[dep] = 1;
-    while (l) {
-        new = l -> y;
-        if (!flag[new])
-            if (path(new, arr, g, flag))
-                return 1;
-        l = l -> nxt;
-    }
-    return 0;
-}
 void printPath(Shu * flag, int nbn) {
     int i;
     printf("voici un path \n");
@@ -214,22 +191,12 @@ void printPath(Shu * flag, int nbn) {
     printf("\n");
 }
 
-int pathExist(Shu dep, Shu arr, graphe g) {
-    Shu * flag;
-    int alors;
-    flag = (Shu * ) malloc(g.nbs * sizeof(Shu));
-    memset(flag, 0, (size_t)(g.nbs << 1));
-    alors = path(dep, arr, g, flag);
-    return alors;
-}
-
 int strandPath(Shu dep, Shu arr, StrGr g, Shu flag[], int nba) {
     // nba = nombre d'arrete
     short newbr, frstbr, neubr;
     Shu newn;
-    ligne l;
     //si la valeur actuel est égale a l'arrivé 
-    // cela veut dire qu'on a parcourut tout le tableau
+    // cela veut dire qu'on est arrivé au sommet voulu
     if (dep == arr) {
         //flag est de base initialisé a 0 sur tout le tableau
         flag[dep] = 1;
@@ -242,9 +209,11 @@ int strandPath(Shu dep, Shu arr, StrGr g, Shu flag[], int nba) {
         return 0;
 
     // On a l'indice du départ du tableau la valeur a 1
+    printf("depart ; %d\n",dep);
     flag[dep] = 1;
     // premie brin = brin du sommet
     frstbr = g.node[dep];
+    printf("newbr %d\n",frstbr);
     // nouveau brin = premier brin
     newbr = frstbr;
     // fait 
@@ -256,8 +225,10 @@ int strandPath(Shu dep, Shu arr, StrGr g, Shu flag[], int nba) {
             // exemple : A <--(5)------(-5)--B
             // Comme on sait que la valeur positif c'est une arete sortante
             neubr = -newbr;
+            printf("neubr %d\n",neubr);
             //la valeur du sommet suivant = au brin + le nombre d'arrete positon
             newn = g.nxt[neubr + nba].node;
+            printf("newn %d\n",newn);
             //si la valeur de l'indice du prochain sommet est égale = 0
             if (!flag[newn])
                 //Si le programme retourne 1 on return 1
@@ -268,6 +239,7 @@ int strandPath(Shu dep, Shu arr, StrGr g, Shu flag[], int nba) {
         //alors sa veut dire qu'on est à l'autre brin
         //donc le nouveau brin se le brin du sommet suivant
         newbr = g.nxt[newbr + nba].next;
+        //printf("superieur newbr %d\n",newbr);
     } while (newbr != frstbr);
     return 0;
 }
@@ -282,45 +254,29 @@ int strandPathExist(StrGr g, Shu dep, Shu arr) {
     flag = (Shu * ) malloc(g.nbs * sizeof(Shu));
     // On remplit le tableau par 0 sur tout le tableau
     memset(flag, 0, (size_t)(g.nbs << 1));
-
-    alors = strandPath(dep, arr, g, flag, nbaretes);
+    // nb arrete en nb sommet
+    alors = strandPath(dep, arr, g, flag, 5);
     return alors;
 }
 
-int nonzeros(graphe g) {
-    Shu i, nbz;
-    ligne l;
-    nbz = 0;
-    for (i = 0; i < g.nbs; i++) {
-        l = g.tab[i];
-        while (l) {
-            nbz++;
-            l = l -> nxt;
-        }
-    }
-    return nbz;
-}
-
 int main(int argc, char ** argv) {
-    graphe g;
     int nb, nbrStr, size_str;
     Shu to, fro;
-    StrGr gg;
+    StrGr g;
     if (argc == 2)
         nb = atoi(argv[1]);
     else
         nb = 5;
     g = createGraphe(nb);
-    printGraph(g);
-    printf("Pour %d il y a %d cases non vides\n soit %f %% \n", nb, to, (to * 100.0) / (nb * nb));
-    to = 3;
-    if (to >= nb)
-        to = nb - 1;
+    printStrGraph(g);
     fro = 0;
-    if (pathExist(fro, to, g))
-        printf("Liste : il existe un path de %d a %d\n\n", fro, to);
+    to = 4;
+    printf("\n");
+    if (strandPathExist(g, fro,to))
+        printf("Liste : il existe un chemin de %d a %d\n\n", fro, to);
     else
-        printf("Liste : pas de path de %d a %d\n\n", fro, to);
-    gg = graphToStrGr(g);
-    printStrGraph(gg);
+        printf("Liste : pas de chemin de %d a %d\n\n", fro, to);
+    //gg = graphToStrGr(g);
+    //printStrGraph(gg);
+    
 }
