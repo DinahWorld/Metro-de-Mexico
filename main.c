@@ -67,7 +67,6 @@ StrGr createGraphe(int nbs) {
     g.nbrStr = nbs * 2;
 
     g.node = (int* ) malloc(((nbs *2) + 1) * sizeof(int));
-    size_t  a = sizeof(g.node); 
     memset(g.node, 0, (size_t) ((nbs *2) + 1));
 
     g.nxt = (Strand* ) malloc(((nbs *2) + 1) * sizeof(Strand));	
@@ -85,60 +84,115 @@ StrGr createGraphe(int nbs) {
     //memset(g.tab, 0, (size_t) nbs * 8);
 
     int iStr = 1;
-
+    int n = 0;
+    int a = 0;
     for(int i = 0;i < 5;i++){
-        // first strand
+
         if(g.node[matrix[i][0]] == NULL){
             g.node[matrix[i][0]] = -iStr;
         }else{
+            n = g.node[matrix[i][0]];
+            a = n;
+            if(n < 0) n = -n;
+            else n = n + 5;
+
+            /* Faut faire une loupe */
+            //Pour quelle aille jusque en bas là en bas
+            if(g.nxt[n].next != 0){
+                g.nxt[iStr] = g.nxt[n];
+                node.next =  iStr;  //provisoire
+                node.node = matrix[i][0];
+                g.nxt[n] = node;
+            }else{
+
             node.next =  -iStr;  //provisoire
+            node.node = matrix[i][0];
+            g.nxt[n] = node;
+        
+
+            node.next = a;
+            node.node = matrix[i][0];
+            g.nxt[iStr] = node;
+            }
         }
-        node.node = matrix[i][0];
-        g.nxt[iStr] = node;
-    
-        // first strand
+        
+
         if(g.node[matrix[i][1]] == NULL){
             g.node[matrix[i][1]] = iStr;
+            node.next = iStr;
+            node.node = matrix[i][1];
+            g.nxt[iStr+5] = node;
+        
         }else{
-            node2.next =  iStr;  //provisoire
-        }
-        node2.node = matrix[i][1];
-        g.nxt[iStr + nbs] = node2;
-        iStr++;
-        /*
-        g.node[iStr] = -iStr;
-        node.node = matrix[i][0];
-        node.next =  matrix[i][0];  //provisoire
-        g.nxt[iStr] = node;
-        g.node[iStr+nbs] = iStr;
-        node2.node = matrix[i][1];
-        node2.next =  matrix[i][1];  //provisoire
-        g.nxt[iStr+nbs] = node2;
-        iStr++;
-        *//*
-        inode = matrix[i][0];
-        l = g.tab[inode];
-        ptl = (ligne) malloc(sizeof(succsom));
-        ptl -> y = matrix[i][1];
-        ptl -> val = matrix[i][1];
-        ptl -> nxt = NULL;
+            n = g.node[matrix[i][1]];
+            a = n;
+            if(n < 0) n = -n;
+            else n = n + 5;
 
-        // On ajoute à la fin de la liste chainé notre successeur
-        //Si notre tableau n'est pas null alors cela veut dire qu'il y a un noeud suivant
-        if(l != NULL){
-            //on parcours la liste chainé
-            //Lorsqu'une prochaine liste sera vide alors on dira qu'on a atteint la fin de la liste
-            while(l->nxt != NULL){
-                l = l->nxt;
+            /* Faut faire une loupe */
+            //Pour quelle aille jusque en bas là en bas
+            if(g.nxt[n].next != 0){
+                g.nxt[iStr+5] = g.nxt[n];
+                node.next =  iStr;  //provisoire
+                node.node = matrix[i][1];
+                g.nxt[n] = node;
+            }else{
+
+            
+
+            node.next =  iStr;  //provisoire
+            node.node = matrix[i][1];
+            g.nxt[n] = node;
+             
+
+            node.next = a;
+            node.node = matrix[i][1];
+            g.nxt[iStr+5] = node;
             }
-            //On indique à notre dernier noeud (avant null) que son successeur sera le noeud ptl 
-            l->nxt = ptl;
+        
+        }        
+        /*
+        }else{ 
+            n = g.node[matrix[i][0]];            //Sinon je considere que c'est un prochain brin
+            node.next =  -iStr;  //provisoire
+            //Le prochain brin appartient au sommet matrice[i][0]
+            node.node = matrix[i][0];
+            //Le brin suivant et le sommet se trouve dans nxt  
+            // a la position du brin
+            if(n<0) n = -n;
+            g.nxt[n] = node;
         }
-        else{
-            g.tab[inode] = ptl;    
+        if(g.node[matrix[i][1]] == NULL){
+            //Je luis attribue
+            g.node[matrix[i][1]] = iStr;
+            node.next =  iStr;  //provisoire
+            //Le prochain brin appartient au sommet matrice[i][0]
+            node.node = matrix[i][1];
+            //Le brin suivant et le sommet se trouve dans nxt  
+            // a la position du brin
+            g.nxt[iStr + 5] = node;
+        }else{
+            n = g.node[matrix[i][1]];            //Sinon je considere que c'est un prochain brin
+            node.next =  iStr;  //provisoire
+            //Le prochain brin appartient au sommet matrice[i][0]
+            node.node = matrix[i][1];
+            //Le brin suivant et le sommet se trouve dans nxt  
+            // a la position du brin
+            if(n<0) {
+                n = -n;
+            }
+            else{
+                n += 5;
+            }
+            printf("%d",n);
+            g.nxt[n] = node;
+            printf("%d\n",g.nxt[n].next);
+
         }
-        */
+    */
+        iStr++;
     }
+
 
     return g;
 }
@@ -148,18 +202,16 @@ void printStrGraph(StrGr g) {
     printf("\n");
     int nbs = g.nbs;
     int brin;
-   for (int i = 0; i < 5;i++) {
-        brin = g.node[i];
-        if(brin < 0){
-            brin = -brin;
-        }else{
-            brin += 5;
-
-        }
-        printf("|%d ",g.node[i]);
-        printf("%d |",g.nxt[brin].node);
+    for(int i = 0;i < 11;i++){
+        printf("%d ",i);
+    } 
+    printf("\n"); 
+   for (int i = 0; i < 11;i++) {
+        
+        printf("|%d ",g.nxt[i].node);
+        printf("%d ",g.nxt[i].next);
+        //printf("%d |",g.nxt[brin].next);
     }
-
 
 }
 
@@ -232,15 +284,19 @@ int strandPath(Shu dep, Shu arr, StrGr g, Shu flag[], int nba) {
             //si la valeur de l'indice du prochain sommet est égale = 0
             if (!flag[newn])
                 //Si le programme retourne 1 on return 1
-                if (strandPath(newn, arr, g, flag, nba))
+                if (strandPath(newn, arr, g, flag, nba)){
+                    printf("%d finito",newn);
                     return 1;
+                }
         }
         //si newbr = est positif
         //alors sa veut dire qu'on est à l'autre brin
         //donc le nouveau brin se le brin du sommet suivant
+        printf("POST newbr %d\n",newbr);
         newbr = g.nxt[newbr + nba].next;
-        //printf("superieur newbr %d\n",newbr);
+        printf("nouveau newbr %d\n",newbr);
     } while (newbr != frstbr);
+    printf("ova %d\n",newbr);
     return 0;
 }
 
@@ -269,14 +325,14 @@ int main(int argc, char ** argv) {
         nb = 5;
     g = createGraphe(nb);
     printStrGraph(g);
-    fro = 0;
-    to = 4;
+    fro = 4;
+    to = 0;
     printf("\n");
     if (strandPathExist(g, fro,to))
         printf("Liste : il existe un chemin de %d a %d\n\n", fro, to);
     else
         printf("Liste : pas de chemin de %d a %d\n\n", fro, to);
-    //gg = graphToStrGr(g);
+    //g = graphToStrGr(g);
     //printStrGraph(gg);
     
 }
