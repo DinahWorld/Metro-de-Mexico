@@ -44,8 +44,53 @@ struct graphe {
 };
 typedef struct graphe graphe;
 
+StrGr assignStrand(StrGr g,int matrix[5][2],int i,int j,int iStr){
+    int n,a;
+    n = 0;
+    a = 0;
+    Strand node;
 
-StrGr createGraphe(int nbs) {
+    if(g.node[matrix[i][j]] == 0){
+        g.node[matrix[i][j]] = -iStr;
+    }
+    else{
+        // On recupere le premier brin de notre sommet
+        n = g.node[matrix[i][j]];
+        a = n;
+        // si le premier brin est par exemple -5 alors dans le tableau
+        // il sera a l'index 5
+        // si le premier brin est 5 par exemple alors dans le tableau 
+        // il sera a l'index 5 + 5 = 10;
+        if(n < 0) n = -n;
+        else n = n + 5;
+        // Si à l'index du premier brin du sommet
+        // on trouve un brin suivant
+        if(g.nxt[n].next != 0){
+            // On echange le brin suivant du premier brin
+            // avec le brin n
+            g.nxt[iStr] = g.nxt[n];
+            node.next =  -iStr;  //provisoire
+            node.node = matrix[i][j];
+            g.nxt[n] = node;
+        }else{
+            // On crée à l'index du premier brin du sommet
+            // un brin suivant qui correspond au brin n
+            node.next =  -iStr;  //provisoire
+            node.node = matrix[i][j];
+            g.nxt[n] = node;
+    
+            // On crée un brin suivant à l'index brin n
+            node.next = a;
+            node.node = matrix[i][j];
+            g.nxt[iStr] = node;
+        }
+    }
+
+    return g;   
+}
+
+
+StrGr createGraphe(int matrix[5][2],int nbs) {
     StrGr g;
     Strand node;
 
@@ -63,41 +108,44 @@ StrGr createGraphe(int nbs) {
     node.next = 0;
     g.nxt[0] = node;
 
-    // ON OBTIENT LE NMBRE D ARETE EN MM TMPS
-    int  matrix[5][2] = {{0,3},{1,2},{4,1},{4,0},{0,1}};
-    //g.tab = (ligne * ) malloc(nbs * sizeof(ligne));
-    //memset(g.tab, 0, (size_t) nbs * 8);
-
     int iStr = 1;
     int n = 0;
     int a = 0;
     for(int i = 0;i < 5;i++){
-
+        //Si notre sommet n'a pas de premier brin
         if(g.node[matrix[i][0]] == 0){
             g.node[matrix[i][0]] = -iStr;
-        }else{
+        }
+        else{
+            // On recupere le premier brin de notre sommet
             n = g.node[matrix[i][0]];
             a = n;
+            // si le premier brin est par exemple -5 alors dans le tableau
+            // il sera a l'index 5
+            // si le premier brin est 5 par exemple alors dans le tableau 
+            // il sera a l'index 5 + 5 = 10;
             if(n < 0) n = -n;
             else n = n + 5;
-
-            /* Faut faire une loupe */
-            //Pour quelle aille jusque en bas là en bas
+            // Si à l'index du premier brin du sommet
+            // on trouve un brin suivant
             if(g.nxt[n].next != 0){
+                // On echange le brin suivant du premier brin
+                // avec le brin n
                 g.nxt[iStr] = g.nxt[n];
                 node.next =  -iStr;  //provisoire
                 node.node = matrix[i][0];
                 g.nxt[n] = node;
             }else{
-
-            node.next =  -iStr;  //provisoire
-            node.node = matrix[i][0];
-            g.nxt[n] = node;
+                // On crée à l'index du premier brin du sommet
+                // un brin suivant qui correspond au brin n
+                node.next =  -iStr;  //provisoire
+                node.node = matrix[i][0];
+                g.nxt[n] = node;
         
-
-            node.next = a;
-            node.node = matrix[i][0];
-            g.nxt[iStr] = node;
+                // On crée un brin suivant à l'index brin n
+                node.next = a;
+                node.node = matrix[i][0];
+                g.nxt[iStr] = node;
             }
         }
         
@@ -137,7 +185,6 @@ StrGr createGraphe(int nbs) {
         }        
         iStr++;
     }
-
 
     return g;
 }
@@ -250,19 +297,24 @@ int strandPathExist(StrGr g, Shu dep, Shu arr) {
     return alors;
 }
 
-int main(int argc, char ** argv) {
+int main(void) {
     int nb;
     Shu to, fro;
     StrGr g;
-    if (argc == 2)
-        nb = atoi(argv[1]);
-    else
+  
         nb = 5;
-    g = createGraphe(nb);
+    
+    // ON OBTIENT LE NMBRE D ARETE EN MM TMPS
+    int  matrix[5][2] = {{0,3},{1,2},{4,1},{0,4},{0,1}};
+    size_t nba= sizeof(matrix); 
+    
+    g = createGraphe(matrix,nb);
     printStrGraph(g);
+    
     fro = 4;
     to = 3;
     printf("\n");
+    
     if (strandPathExist(g, fro,to))
         printf("Liste : il existe un chemin de %d a %d\n\n", fro, to);
     else
