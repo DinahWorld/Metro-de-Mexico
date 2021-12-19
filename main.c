@@ -9,8 +9,6 @@
 #include <time.h>
 
 
-
-
 typedef short unsigned Shu;
 struct Strand {
     Shu node;
@@ -22,204 +20,143 @@ typedef struct Strand Strand;
 struct StrandGraph {
     Shu nbs;
     Shu nbrStr;
-	// le primier brin
+    Shu edge;
+    // le primier brin
     short * node; /* first strand*/
     // puis le neoud puis le brin suivant
-	Strand * nxt; /* node and next strand*/
+    Strand * nxt; /* node and next strand*/
 };
 typedef struct StrandGraph StrGr;
 
-/* Maintenant le graphe par liste de successeurs */
-struct succsom {
-    Shu y;
-    Shu val;
-    struct succsom * nxt;
-};
-typedef struct succsom succsom;
-typedef struct succsom * ligne;
+// |0 0 |0 -5 |1 5 |4 -4 |4 -3 |0 4 |3 1 |2 2 |1 -2 |0 -1 |1 3  
+// |0 0 |0 -5 |1 5 |4 -4 |4 -3 |0 4 |3 1 |2 2 |1 -2 |0 -1 |1 3 
 
-struct graphe {
-    int nbs;
-    ligne * tab; /* une ligne represente tous les successeurs d'un noeud*/
-};
-typedef struct graphe graphe;
+// |0 0 |0 -5 |1 5 |4 4 |0 -1 |0 -4 |3 1 |2 2 |1 -2 |4 -3 |1 3 
+// |0 0 |0 -5 |1 5 |4 4 |0 -1 |0 -4 |3 1 |2 2 |1 -2 |4 -3 |1 3 
+StrGr assignStrand(StrGr g, int node, int nstr, int indexstr) {
+    int fstr, save;
+    Strand str;
+    fstr = 0;
+    save = 0;
+    // On recupere le premier brin de notre sommet
+    fstr = g.node[node];
+    // Si le sommet possede un premier brin    
+    if (fstr != 0) {
+        save = fstr;
 
-StrGr assignStrand(StrGr g,int matrix[5][2],int i,int j,int iStr){
-    int n,a;
-    n = 0;
-    a = 0;
-    Strand node;
-
-    if(g.node[matrix[i][j]] == 0){
-        g.node[matrix[i][j]] = -iStr;
-    }
-    else{
-        // On recupere le premier brin de notre sommet
-        n = g.node[matrix[i][j]];
-        a = n;
         // si le premier brin est par exemple -5 alors dans le tableau
         // il sera a l'index 5
         // si le premier brin est 5 par exemple alors dans le tableau 
-        // il sera a l'index 5 + 5 = 10;
-        if(n < 0) n = -n;
-        else n = n + 5;
+        // il sera a l'index 5 + nb = 10;
+        fstr = (fstr < 0) ? -fstr : fstr + g.edge;
+
         // Si à l'index du premier brin du sommet
         // on trouve un brin suivant
-        if(g.nxt[n].next != 0){
+        if (g.nxt[fstr].next != 0) {
+
             // On echange le brin suivant du premier brin
             // avec le brin n
-            g.nxt[iStr] = g.nxt[n];
-            node.next =  -iStr;  //provisoire
-            node.node = matrix[i][j];
-            g.nxt[n] = node;
-        }else{
+            g.nxt[indexstr] = g.nxt[fstr];
+            str.next = nstr; //provisoire
+            str.node = node;
+            g.nxt[fstr] = str;
+        } else {
             // On crée à l'index du premier brin du sommet
             // un brin suivant qui correspond au brin n
-            node.next =  -iStr;  //provisoire
-            node.node = matrix[i][j];
-            g.nxt[n] = node;
-    
-            // On crée un brin suivant à l'index brin n
-            node.next = a;
-            node.node = matrix[i][j];
-            g.nxt[iStr] = node;
-        }
-    }
+            str.next = nstr; //provisoire
+            str.node = node;
+            g.nxt[fstr] = str;
 
-    return g;   
+            // On crée un brin suivant qui sera la valeur
+            // du premier brin du sommet à l'index du brin n
+            str.next = save;
+            str.node = node;
+            g.nxt[indexstr] = str;
+        }
+
+    }
+    // Si notre sommet n'a pas de premier brin
+    else {
+        g.node[node] = nstr;
+        // on initialise son brin suivant par son le brin n
+        str.next = nstr;
+        str.node = node;
+        g.nxt[indexstr] = str;
+
+    }
+    return g;
 }
 
-
-StrGr createGraphe(int matrix[5][2],int nbs) {
+StrGr createGraphe(int matrix[6][2], int nbs,int nbstr) {
     StrGr g;
-    Strand node;
+    int nstr;
 
-    g.nbs = nbs;
-    g.nbrStr = nbs * 2;
+    //on commence a partir de brin 1
+    nstr = 1;
 
-    g.node = (short* ) malloc(((nbs *2) + 1) * sizeof(short));
-    memset(g.node, 0, (size_t) ((nbs *2) + 1));
+    //Nombres de sommets
+    g.nbs = 5;
+    //Nombres de brins
+    g.nbrStr = nbstr;
+    // Nombre d'arete
+    g.edge = nbstr >> 1;
 
-    g.nxt = (Strand* ) malloc(((nbs *2) + 1) * sizeof(Strand));	
-	memset(g.nxt, 0, (size_t) ((nbs *2) + 1));
-    
-    g.node[0] = -0;
-	node.node = 0;
-    node.next = 0;
-    g.nxt[0] = node;
-
-    int iStr = 1;
-    int n = 0;
-    int a = 0;
-    for(int i = 0;i < 5;i++){
-        //Si notre sommet n'a pas de premier brin
-        if(g.node[matrix[i][0]] == 0){
-            g.node[matrix[i][0]] = -iStr;
-        }
-        else{
-            // On recupere le premier brin de notre sommet
-            n = g.node[matrix[i][0]];
-            a = n;
-            // si le premier brin est par exemple -5 alors dans le tableau
-            // il sera a l'index 5
-            // si le premier brin est 5 par exemple alors dans le tableau 
-            // il sera a l'index 5 + 5 = 10;
-            if(n < 0) n = -n;
-            else n = n + 5;
-            // Si à l'index du premier brin du sommet
-            // on trouve un brin suivant
-            if(g.nxt[n].next != 0){
-                // On echange le brin suivant du premier brin
-                // avec le brin n
-                g.nxt[iStr] = g.nxt[n];
-                node.next =  -iStr;  //provisoire
-                node.node = matrix[i][0];
-                g.nxt[n] = node;
-            }else{
-                // On crée à l'index du premier brin du sommet
-                // un brin suivant qui correspond au brin n
-                node.next =  -iStr;  //provisoire
-                node.node = matrix[i][0];
-                g.nxt[n] = node;
-        
-                // On crée un brin suivant à l'index brin n
-                node.next = a;
-                node.node = matrix[i][0];
-                g.nxt[iStr] = node;
-            }
-        }
-        
-        /* Faut faire une loupe */
-        //Pour quelle aille jusque en bas là en bas
-        if(g.node[matrix[i][1]] == 0){
-            g.node[matrix[i][1]] = iStr;
-            node.next = iStr;
-            node.node = matrix[i][1];
-            g.nxt[iStr+5] = node;
-        
-        }else{
-            n = g.node[matrix[i][1]];
-            a = n;
-            if(n < 0) n = -n;
-            else n = n + 5;
-
-            /* Faut faire une loupe */
-            //Pour quelle aille jusque en bas là en bas
-            if(g.nxt[n].next != 0){
-                g.nxt[iStr+5] = g.nxt[n];
-                node.next = iStr;  //provisoire
-                node.node = matrix[i][1];
-                g.nxt[n] = node;
-            }else{
-
-                node.next =  iStr;  //provisoire
-                node.node = matrix[i][1];
-                g.nxt[n] = node;
+    // Allocations de la mémoire
+    g.node = (short * ) malloc(g.nbs * sizeof(short));
+    memset(g.node, 0, (size_t) g.nbs);
+    // + 1 car on compte aussi le brin 0
+    g.nxt = (Strand * ) malloc((g.nbrStr + 1) * sizeof(Strand));
+    memset(g.nxt, 0, (size_t)(g.nbrStr + 1));
 
 
-                node.next = a;
-                node.node = matrix[i][1];
-                g.nxt[iStr+5] = node;
-            }
-        
-        }        
-        iStr++;
+
+    for (int i = 0; i < g.edge; i++, nstr++) {
+        // La premiere valeur du tableau de la matrice aura 
+        // un brin -n
+        g = assignStrand(g, matrix[i][0], -nstr, nstr);
+        g = assignStrand(g, matrix[i][1], nstr, nstr + g.edge);
     }
 
     return g;
 }
 
-
 void printStrGraph(StrGr g) {
-    printf("\n");
-    for(int i = 0;i < 11;i++){
-        printf("%d ",i);
-    } 
-    printf("\n"); 
-   for (int i = 0; i < 11;i++) {
-        
-        printf("|%d ",g.nxt[i].node);
-        printf("%d ",g.nxt[i].next);
-        //printf("%d |",g.nxt[brin].next);
+    printf("Tableau des premiers brin\nBrins  ");
+    for (int i = 0; i < g.nbs; i++) {
+        if (g.node[i] >= 0) printf(" ");
+        printf("%d ", g.node[i]);
+    }
+
+    printf("\nSommet ");
+    for (int i = 0; i < g.nbs; i++) {
+        printf(" %d ", i);
+    }
+    printf("\n---\nBrins\t\t ");
+    for (int i = 1; i < g.nbrStr + 1; i++) {
+        (i > g.edge) ? 
+        printf("+%d ", i - g.edge):
+        printf("-%d ", i);
+    }
+    printf("\nBrins suivant\t ");
+    for (int i = 1; i < g.nbrStr + 1; i++) {
+        if (g.nxt[i].next >= 0) printf(" ");
+        printf("%d ", g.nxt[i].next);
     }
 
 }
-
-
-void insert(StrGr g, int num, Shu nod) {
-
-}
-
 
 void seegr(StrGr g) {
     int i, size, adv;
     size = (g.nbrStr) + 1;
     adv = size >> 1;
+    printf("\n");
     for (i = 0; i < g.nbs; i++)
         printf("%2d %3d| ", i, g.node[i]);
     printf("\n\n");
-    for (i = 0; i < size; i++)
+    for (i = 0; i < size; i++){
+        if(i == g.nbs + 1) printf("\n");
         printf("%3d %2d %3d| ", i - adv, g.nxt[i].node, g.nxt[i].next);
+    }
     printf("\n");
 }
 
@@ -234,7 +171,6 @@ void printPath(Shu * flag, int nbn) {
 }
 
 int strandPath(Shu dep, Shu arr, StrGr g, Shu flag[], int nba) {
-    // nba = nombre d'arrete
     short newbr, frstbr, neubr;
     Shu newn;
     //si la valeur actuel est égale a l'arrivé 
@@ -246,7 +182,7 @@ int strandPath(Shu dep, Shu arr, StrGr g, Shu flag[], int nba) {
     }
     // flag = tableau vide de taille sommet * 2
     // si la valeur du tableau flag est égale a 1 on return 0
-	// Sa veut dire qu'on a déjà exploré le sommet
+    // Sa veut dire qu'on a déjà exploré le sommet
     if (flag[dep])
         return 0;
 
@@ -270,7 +206,7 @@ int strandPath(Shu dep, Shu arr, StrGr g, Shu flag[], int nba) {
             //si la valeur de l'indice du prochain sommet est égale = 0
             if (!flag[newn])
                 //Si le programme retourne 1 on return 1
-                if (strandPath(newn, arr, g, flag, nba)){
+                if (strandPath(newn, arr, g, flag, nba)) {
                     return 1;
                 }
         }
@@ -282,18 +218,15 @@ int strandPath(Shu dep, Shu arr, StrGr g, Shu flag[], int nba) {
     return 0;
 }
 
-
 int strandPathExist(StrGr g, Shu dep, Shu arr) {
     Shu * flag;
-    int alors, nbaretes;
-    // nombre d'arrete = nombre de brin / 2
-    nbaretes = g.nbrStr >> 1;
+    int alors;
     // On alloue le nombre de sommet * 2 du graphe au tableau
     flag = (Shu * ) malloc(g.nbs * sizeof(Shu));
     // On remplit le tableau par 0 sur tout le tableau
     memset(flag, 0, (size_t)(g.nbs << 1));
     // nb arrete en nb sommet
-    alors = strandPath(dep, arr, g, flag, nbaretes);
+    alors = strandPath(dep, arr, g, flag, g.edge);
     return alors;
 }
 
@@ -301,23 +234,24 @@ int main(void) {
     int nb;
     Shu to, fro;
     StrGr g;
-  
-        nb = 5;
-    
+
     // ON OBTIENT LE NMBRE D ARETE EN MM TMPS
-    int  matrix[5][2] = {{0,3},{1,2},{4,1},{0,4},{0,1}};
-    size_t nba= sizeof(matrix); 
-    
-    g = createGraphe(matrix,nb);
+    int matrix[6][2] = {{0,3},{1,2},{4,1},{4,0},{0,1},{2,4}};
+
+    int num_rows = sizeof(matrix) / sizeof(matrix[0]);
+    //Nombre de sommet    
+    nb = 5;
+    g = createGraphe(matrix, nb,num_rows*2);
     printStrGraph(g);
-    
+    //seegr(g);
     fro = 4;
     to = 3;
     printf("\n");
-    
-    if (strandPathExist(g, fro,to))
+
+    if (strandPathExist(g, fro, to))
         printf("Liste : il existe un chemin de %d a %d\n\n", fro, to);
     else
         printf("Liste : pas de chemin de %d a %d\n\n", fro, to);
-    
+
+
 }
