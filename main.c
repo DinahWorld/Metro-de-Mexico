@@ -77,6 +77,7 @@ StrGr assignStrand(StrGr g, int node, int nstr, int indexstr) {
     }
     // Si notre sommet n'a pas de premier brin
     else {
+        printf("%d\n",nstr);
         g.node[node] = nstr;
         // on initialise son brin suivant par son le brin n
         str.next = nstr;
@@ -95,7 +96,7 @@ StrGr createGraphe(int matrix[6][2], int nbs,int nbstr) {
     nstr = 1;
 
     //Nombres de sommets
-    g.nbs = 5;
+    g.nbs = nbs;
     //Nombres de brins
     g.nbrStr = nbstr;
     // Nombre d'arete
@@ -136,6 +137,11 @@ void printStrGraph(StrGr g) {
         (i > g.edge) ? 
         printf("+%d ", i - g.edge):
         printf("-%d ", i);
+    }
+    printf("\nSommet\t\t ");
+    for (int i = 1; i < g.nbrStr + 1; i++) {
+        if (g.nxt[i].node >= 0) printf(" ");
+        printf("%d ", g.nxt[i].node);
     }
     printf("\nBrins suivant\t ");
     for (int i = 1; i < g.nbrStr + 1; i++) {
@@ -236,11 +242,11 @@ int main(void) {
     StrGr g;
 
     // ON OBTIENT LE NMBRE D ARETE EN MM TMPS
-    int matrix[6][2] = {{0,3},{1,2},{4,1},{4,0},{0,1},{2,4}};
+    int matrix[7][2] = {{0,3},{1,2},{4,1},{4,0},{0,1},{2,4},{2,5}};
 
     int num_rows = sizeof(matrix) / sizeof(matrix[0]);
     //Nombre de sommet    
-    nb = 5;
+    nb = 6;
     g = createGraphe(matrix, nb,num_rows*2);
     printStrGraph(g);
     //seegr(g);
