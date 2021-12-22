@@ -18,8 +18,8 @@ LDFLAGS = -lm
 PROGNAME = Metro_de_Mexico
 VERSION = 1.0
 distdir = $(PROGNAME)-$(VERSION)
-HEADERS = graph.h
-SOURCES = main.c graph.c path.c
+HEADERS = $(wildcard include/*.c)
+SOURCES = $(wildcard src/*.c)
 SUBOBJ = $(SOURCES:.cpp=.o)
 OBJ = $(SUBOBJ:.c=.o)
 DISTFILES = $(SOURCES) Makefile $(HEADERS)
