@@ -7,14 +7,12 @@
 
 
 int main(void) {
-    int nbs;
     Shu to, fro;
-    StrGr g;
 
     FILE* stream = fopen("mexico.txt","r");
-    char line[1024];
-    Shu matrix[NBA][VERT];
-    const char* tok;
+    char line[1024] = {0};
+    /*Shu matrix[NBA][3] = {0};;
+    const char* tok = NULL;
     int i,y;
     i = 0;
     y = 0;
@@ -29,24 +27,28 @@ int main(void) {
         i++;
         free(tmp);
     }
+    */
+   Shu matrix[][] = {};
     // nombres de brins
     int strand = NBA << 1;
 
     //Nombre de sommet    
-    nbs = NODE;
-    
+    int nbs = NODE;
     // Complexité en Log(N);
-    g = createGraphe(matrix, nbs,strand);
+    StrGr g = createGraphe(matrix, nbs,strand);
+    printf("%d",g.node[95]);
     //printStrGraph(g);
     //seegr(g);
-    fro = 86;
-    to = 18;
+    fro = 5;
+    to = 1;
     printf("\n");
 
     if (strandPathExist(g, fro, to))
         printf("Liste : il existe un chemin de %d a %d\n\n", fro, to);
     else
         printf("Liste : pas de chemin de %d a %d\n\n", fro, to);
+    
+    //printStrGraph(g);
 
     free(g.node);
     free(g.nxt);

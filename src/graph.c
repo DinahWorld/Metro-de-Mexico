@@ -21,10 +21,7 @@ StrGr assignStrand(StrGr g, int node, int nstr, int indexstr,Shu time) {
         // il sera a l'index 5 + nb = 10;
         fstr = (fstr < 0) ? -fstr : fstr + g.edge;
         
-        str.next = nstr; 
-        str.node = node;
-        str.time = time;
-            
+ 
         // Si à l'index du premier brin du sommet
         // on trouve un brin suivant
         if (g.nxt[fstr].next != 0) {
@@ -32,10 +29,18 @@ StrGr assignStrand(StrGr g, int node, int nstr, int indexstr,Shu time) {
             // On echange le brin suivant du premier brin
             // avec le brin n
             g.nxt[indexstr] = g.nxt[fstr];
+                   str.next = nstr; 
+        str.node = node;
+        str.time = time;
+            
             g.nxt[fstr] = str;
         } else {
             // On crée à l'index du premier brin du sommet
             // un brin suivant qui correspond au brin n
+                   str.next = nstr; 
+        str.node = node;
+        str.time = time;
+            
             g.nxt[fstr] = str;
 
             // On crée un brin suivant qui sera la valeur
@@ -53,6 +58,7 @@ StrGr assignStrand(StrGr g, int node, int nstr, int indexstr,Shu time) {
         // on initialise son brin suivant par son le brin n
         str.next = nstr;
         str.node = node;
+        str.time = time;
         g.nxt[indexstr] = str;
 
     }
@@ -60,27 +66,15 @@ StrGr assignStrand(StrGr g, int node, int nstr, int indexstr,Shu time) {
 }
 
 StrGr createGraphe(Shu matrix[NBA][VERT], int nbs,int nbstr) {
-    StrGr g;
-    int nstr;
+    StrGr g = {0,nbs,nbstr,NBA,NULL,NULL};
 
     //on commence a partir de brin 1
-    nstr = 1;
-
-    //Nombres de sommets
-    g.nbs = nbs;
-    //Nombres de brins
-    g.nbrStr = nbstr;
-    // Nombre d'arete
-    g.edge = nbstr >> 1;
+    int nstr = 1;
 
     // Allocations de la mémoire
-    g.node = (short * ) malloc(g.nbs * sizeof(short));
-    memset(g.node, 0, (size_t) g.nbs);
+    g.node = (short * ) calloc(1,g.nbs * sizeof(short));
     // + 1 car on compte aussi le brin 0
-    g.nxt = (Strand * ) malloc((g.nbrStr + 1) * sizeof(Strand));
-    memset(g.nxt, 0, (size_t)(g.nbrStr + 1));
-
-
+    g.nxt = (Strand * ) calloc(1,(g.nbrStr + 1) * sizeof(Strand));
 
     for (int i = 0; i < g.edge; i++, nstr++) {
         // La premiere valeur du tableau de la matrice aura 

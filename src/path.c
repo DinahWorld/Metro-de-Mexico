@@ -6,14 +6,15 @@
 
 /// Fonction qui permet de savoir si un chemin existe dans notre graphe 
 int strandPathExist(StrGr g, Shu dep, Shu arr) {
-    Shu * flag;
+    Shu * flag = NULL;
     int alors;
     // On alloue le nombre de sommet * 2 du graphe au tableau
     flag = (Shu * ) malloc(g.nbs * sizeof(Shu));
     // On remplit le tableau par 0 sur tout le tableau
     memset(flag, 0, (size_t)(g.nbs << 1));
-    // nb arrete en nb sommet
     alors = strandPath(dep, arr, g, flag, g.edge);
+    //printPath(flag,g.nbs);
+    
     free(flag);
     return alors;
 }
@@ -31,29 +32,30 @@ void printPath(Shu * flag, int nbn) {
 
 /// Fonction qui affiche notre graphe
 void printStrGraph(StrGr g) {
+    int i;
     printf("Tableau des premiers brin\nBrins  ");
-    for (int i = 0; i < g.nbs; i++) {
+    for (i = 0; i < 5; i++) {
         if (g.node[i] >= 0) printf(" ");
         printf("%d ", g.node[i]);
     }
 
     printf("\nSommet ");
-    for (int i = 0; i < g.nbs; i++) {
+    for (i = 0; i < 5; i++) {
         printf(" %d ", i);
     }
     printf("\n---\nBrins\t\t ");
-    for (int i = 1; i < g.nbrStr + 1; i++) {
+    for (i = 1; i < 5 + 1; i++) {
         (i > g.edge) ? 
         printf("+%d ", i - g.edge):
         printf("-%d ", i);
     }
     printf("\nSommet\t\t ");
-    for (int i = 1; i < g.nbrStr + 1; i++) {
+    for (i = 1; i < 5; i++) {
         if (g.nxt[i].node >= 0) printf(" ");
         printf("%d ", g.nxt[i].node);
     }
     printf("\nBrins suivant\t ");
-    for (int i = 1; i < g.nbrStr + 1; i++) {
+    for (i = 1; i < 5; i++) {
         if (g.nxt[i].next >= 0) printf(" ");
         printf("%d ", g.nxt[i].next);
     }
@@ -79,7 +81,7 @@ int strandPath(Shu dep, Shu arr, StrGr g, Shu flag[], int nba) {
 
     // On a l'indice du départ du tableau la valeur a 1
     flag[dep] = 1;
-    // premie brin = brin du sommet
+    // premier brin = brin du sommet
     frstbr = g.node[dep];
     // nouveau brin = premier brin
     newbr = frstbr;

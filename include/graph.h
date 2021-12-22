@@ -14,10 +14,8 @@ typedef struct Strand Strand;
 struct StrandGraph {
     Shu nbs;
     Shu nbrStr;
-    Shu edge;
-    // le primier brin
+    Shu edge;   /* aretes */
     short * node; /* first strand*/
-    // puis le neoud puis le brin suivant
     Strand * nxt; /* node and next strand*/
 };
 typedef struct StrandGraph StrGr;
