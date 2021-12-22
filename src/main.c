@@ -9,8 +9,8 @@
 int main(void) {
     Shu to, fro;
 
-    FILE* stream = fopen("mexico.txt","r");
-    char line[1024] = {0};
+    //FILE* stream = fopen("mexico.txt","r");
+    //char line[1024] = {0};
     /*Shu matrix[NBA][3] = {0};;
     const char* tok = NULL;
     int i,y;
@@ -28,7 +28,7 @@ int main(void) {
         free(tmp);
     }
     */
-   Shu matrix[][] = {};
+    Shu matrix[5][3] = {{0,3,5},{1,2,3},{4,1,5},{0,4,3},{0,1,2}};
     // nombres de brins
     int strand = NBA << 1;
 
@@ -36,11 +36,11 @@ int main(void) {
     int nbs = NODE;
     // Complexité en Log(N);
     StrGr g = createGraphe(matrix, nbs,strand);
-    printf("%d",g.node[95]);
+
     //printStrGraph(g);
-    //seegr(g);
-    fro = 5;
-    to = 1;
+    seegr(g);
+    fro = 0;
+    to = 4;
     printf("\n");
 
     if (strandPathExist(g, fro, to))

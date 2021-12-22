@@ -13,7 +13,7 @@ int strandPathExist(StrGr g, Shu dep, Shu arr) {
     // On remplit le tableau par 0 sur tout le tableau
     memset(flag, 0, (size_t)(g.nbs << 1));
     alors = strandPath(dep, arr, g, flag, g.edge);
-    //printPath(flag,g.nbs);
+    printPath(flag,g.nbs);
     
     free(flag);
     return alors;
@@ -81,8 +81,9 @@ int strandPath(Shu dep, Shu arr, StrGr g, Shu flag[], int nba) {
 
     // On a l'indice du départ du tableau la valeur a 1
     flag[dep] = 1;
-    // premier brin = brin du sommet
+    // premie brin = brin du sommet
     frstbr = g.node[dep];
+    printf("depart %d brin = %d\n ",dep,g.node[dep]);
     // nouveau brin = premier brin
     newbr = frstbr;
     // fait 
