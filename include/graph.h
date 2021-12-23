@@ -1,8 +1,8 @@
 #ifndef STR_GRAPH
 #define STR_GRAPH
 typedef short unsigned Shu;
-#define NODE 5 /* Nombres de sommets */
-#define NBA 5 /* Nombres d'aretes */
+#define NODE 122 /* Nombres de sommets */
+#define NBA 136 /* Nombres d'aretes */
 #define VERT 3 /* Nombres d'éléments dans la matrice */ 
 struct Strand {
     Shu node;

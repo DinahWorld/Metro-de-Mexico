@@ -1,163 +1,163 @@
-Observatorio	0
-Juanacatlan	1
-Chapultepec	2
-Sevilla	3
-Insurgentes	4
-Cuauhtemoc	5
-Salto del Agua	6
-Isabel la Católica	7
-Merced	8
-San Lázaro	9
-Moctezuma	10
-Balbuena	11
-Boulevard Pto. Aéreo	12
-Gómez Farías	13
-Zaragoza	14
-Cuatro Caminos	15
-Panteones	16
-Cuitlahuac	17
-Popotla	18
-Colegio Militar	19
-Normal	20
-San Cosme	21
-Revolución	22
-Hidalgo	23
-Bellas Artes	24
-Allende	25
-Zócalo	26
-Pino Suárez	27
-San Antonio Abad	28
-Chabacano	29
-Viaducto	30
-Xola	31
-Villa de Cortés	32
-Nativitas	33
-Portales	34
-Ermita	35
-General Anaya	36
-Tasqueña	37
-Indios Verdes	38
-Potrero	39
-Tlatelolco	40
-Guerrero	41
-Juárez	42
-Balderas	43
-Niños Héroes	44
-Hospital General	45
-Centro Médico	46
-Etiopía	47
-Eugenia	48
-División del NOrte	49
-Zapata	50
-Coyoacán	51
-Viveros	52
-Miguel Ángel de Quevedo	53
-Copilco	54
-Universidad	55
-Talisman	56
-Bondojito	57
-Canal del Norte	58
-Morelos	59
-Candelaria	60
-Fray Servando	61
-Jamaica	62
-Santa Anita	63
-Politécnico	64
-Autobuses del Norte	65
-La Raza	66
-Misterios	67
-Valle Gómez	68
-Consulado	69
-Eduardo Molina	70
-Aragón	71
-Oceanía	72
-Terminal Áerea	73
-Hangares	74
-Pantitlán	75
-Tezozomoc	76
-Azcapotzalco	77
-Ferreria	78
-Norte 45	79
-Vallejo	80
-Instituto del Petróleo	81
-Lindavista	82
-Deportivo 18 de Marzo	83
-La Villa	84
-Martin Carrera	85
-Rosario	86
-Aquiles Serdan	87
-Camarones	88
-Refineria	89
-Tacuba	90
-San Joaquin	91
-Polanco	92
-Auditorio	93
-Constituyentes	94
-Tacubaya	95
-Sn. Pedro de los Pinos	96
-Sn. Antonio	97
-Mixcoac	98
-Barranca del Muerto	99
-San Juan de Letrán	100
-Doctores	101
-Obrera	102
-La Viga	103
-Coyuya	104
-Iztacalco	105
-Apatlaco	106
-Aculco	107
-Escuadrón 201	108
-Iztapalapa	109
-C. de la Estrella	110
-U.A.M. I	111
-Const. de 1917	112
-Patriotismo	113
-Chilpancingo	114
-Lázaro Cardenas	115
-Mixiuhca	116
-Velódromo	117
-Ciudad Deportiva	118
-Puebla	119
-Buenavista	151
-Garibaldi	121
-Lagunilla	122
-Tepito	123
-Flores Magón	124
-Romero Rubio	125
-Deportivo Oceanía	126
-Bosque Aragón	127
-Villa Aragón	128
-Nezahualcoyotl	129
-Impulsora	130
-Río de los Remedios	131
-Muzquiz	132
-Ecatepec	133
-Olimpica	134
-Plaza Aragón	135
-Ciudad Azteca	136
-Agrícola Oriental	137
-Canal de San Juan	138
-Tepalcates	139
-Guelatao	140
-Peñon Viejo	141
-Acatitla	142
-Santa Marta	143
-Los Reyes	144
-La Paz	145
-Insurgentes Sur	146
-20 de Noviembre	147
-Parque de los Venados	148
-Eje Central	149
-Mexicaltzingo	150
-Atlalilco	120
-Pueblo Culhuacán	152
-ESIME Culhuacán	153
-Tomatlán	154
-Calle 11	155
-Periférico Ote.	156
-Tezonco	157
-Olivos	158
-Nopalera	159
-Zapotitlán	160
-Tlaltenco	161
-Tlahuac	162
+0|Observatorio
+1|Juanacatlan
+2|Chapultepec
+3|Sevilla
+4|Insurgentes
+5|Cuauhtemoc
+6|Salto del Agua
+7|Isabel la Católica
+8|Merced
+9|San Lázaro
+10|Moctezuma
+11|Balbuena
+12|Boulevard Pto. Aéreo
+13|Gómez Farías
+14|Zaragoza
+15|Cuatro Caminos
+16|Panteones
+17|Cuitlahuac
+18|Popotla
+19|Colegio Militar
+20|Normal
+21|San Cosme
+22|Revolución
+23|Hidalgo
+24|Bellas Artes
+25|Allende
+26|Zócalo
+27|Pino Suárez
+28|San Antonio Abad
+29|Chabacano
+30|Viaducto
+31|Xola
+32|Villa de Cortés
+33|Nativitas
+34|Portales
+35|Ermita
+36|General Anaya
+37|Tasqueña
+38|Indios Verdes
+39|Potrero
+40|Tlatelolco
+41|Guerrero
+42|Juárez
+43|Balderas
+44|Niños Héroes
+45|Hospital General
+46|Centro Médico
+47|Etiopía
+48|Eugenia
+49|División del NOrte
+50|Zapata
+51|Coyoacán
+52|Viveros
+53|Miguel Ángel de Quevedo
+54|Copilco
+55|Universidad
+56|Talisman
+57|Bondojito
+58|Canal del Norte
+59|Morelos
+60|Candelaria
+61|Fray Servando
+62|Jamaica
+63|Santa Anita
+64|Politécnico
+65|Autobuses del Norte
+66|La Raza
+67|Misterios
+68|Valle Gómez
+69|Consulado
+70|Eduardo Molina
+71|Aragón
+72|Oceanía
+73|Terminal Áerea
+74|Hangares
+75|Pantitlán
+76|Tezozomoc
+77|Azcapotzalco
+78|Ferreria
+79|Norte 45
+80|Vallejo
+81|Instituto del Petróleo
+82|Lindavista
+83|Deportivo 18 de Marzo
+84|La Villa
+85|Martin Carrera
+86|Rosario
+87|Aquiles Serdan
+88|Camarones
+89|Refineria
+90|Tacuba
+91|San Joaquin
+92|Polanco
+93|Auditorio
+94|Constituyentes
+95|Tacubaya
+96|Sn. Pedro de los Pinos
+97|Sn. Antonio
+98|Mixcoac
+99|Barranca del Muerto
+100|San Juan de Letrán
+101|Doctores
+102|Obrera
+103|La Viga
+104|Coyuya
+105|Iztacalco
+106|Apatlaco
+107|Aculco
+108|Escuadrón 201
+109|Iztapalapa
+110|C. de la Estrella
+111|U.A.M. I
+112|Const. de 1917
+113|Patriotismo
+114|Chilpancingo
+115|Lázaro Cardenas
+116|Mixiuhca
+117|Velódromo
+118|Ciudad Deportiva
+119|Puebla
+151|Buenavista
+121|Garibaldi
+122|Lagunilla
+123|Tepito
+124|Flores Magón
+125|Romero Rubio
+126|Deportivo Oceanía
+127|Bosque Aragón
+128|Villa Aragón
+129|Nezahualcoyotl
+130|Impulsora
+131|Río de los Remedios
+132|Muzquiz
+133|Ecatepec
+134|Olimpica
+135|Plaza Aragón
+136|Ciudad Azteca
+137|Agrícola Oriental
+138|Canal de San Juan
+139|Tepalcates
+140|Guelatao
+141|Peñon Viejo
+142|Acatitla
+143|Santa Marta
+144|Los Reyes
+145|La Paz
+146|Insurgentes Sur
+147|20 de Noviembre
+148|Parque de los Venados
+149|Eje Central
+150|Mexicaltzingo
+120|Atlalilco
+152|Pueblo Culhuacán
+153|ESIME Culhuacán
+154|Tomatlán
+155|Calle 11
+156|Periférico Ote.
+157|Tezonco
+158|Olivos
+159|Nopalera
+160|Zapotitlán
+161|Tlaltenco
+162|Tlahuac

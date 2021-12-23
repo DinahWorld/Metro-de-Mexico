@@ -1,6 +1,8 @@
 {
     "files.associations": {
         "graph.h": "c",
-        "stdlib.h": "c"
-    }
+        "stdlib.h": "c",
+        "stdbool.h": "c"
+    },
+    "cmake.configureOnOpen": false
 }

@@ -9,9 +9,8 @@ int strandPathExist(StrGr g, Shu dep, Shu arr) {
     Shu * flag = NULL;
     int alors;
     // On alloue le nombre de sommet * 2 du graphe au tableau
-    flag = (Shu * ) malloc(g.nbs * sizeof(Shu));
+    flag = (Shu * ) calloc(1,g.nbs * sizeof(Shu));
     // On remplit le tableau par 0 sur tout le tableau
-    memset(flag, 0, (size_t)(g.nbs << 1));
     alors = strandPath(dep, arr, g, flag, g.edge);
     printPath(flag,g.nbs);
     
@@ -90,16 +89,11 @@ int strandPath(Shu dep, Shu arr, StrGr g, Shu flag[], int nba) {
     do {
         // si le nouveau brin est inférieur donc qu'il soit négatif
         if (newbr < 0) {
-            /* brin de depart */
-            // le brin suivant est égale à la valeur absolue du brin actuel
-            // exemple : A <--(5)------(-5)--B
-            // Comme on sait que la valeur positif c'est une arete sortante
-            neubr = -newbr;
-            //la valeur du sommet suivant = au brin + le nombre d'arrete positon
-            newn = g.nxt[neubr + nba].node;
-            //si la valeur de l'indice du prochain sommet est égale = 0
+
+            // Pour aller au noeud
+            neubr = -newbr; /* brin de depart */
+            newn = g.nxt[neubr + nba].node; 
             if (!flag[newn])
-                //Si le programme retourne 1 on return 1
                 if (strandPath(newn, arr, g, flag, nba)) {
                     return 1;
                 }

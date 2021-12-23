@@ -18,12 +18,6 @@ StrGr createGraphe(Shu matrix[NBA][VERT], int nbs,int nbstr) {
     for (int i = 0; i < g.edge; i++, nstr++) {
         // La premiere valeur du tableau de la matrice aura 
         // un brin -n
-
-        // nstr = 1
-        // 6 - 1 = 5
-        // 6 - 2 = 4
-        // 6 - 3 
-        // 6 - 5 = 1
         g = assignStrand(g, matrix[i][0], -nstr,matrix[i][2]);
         g = assignStrand(g, matrix[i][1], nstr,matrix[i][2]);
     }
@@ -46,15 +40,15 @@ StrGr assignStrand(StrGr g, int node, int nstr,Shu time) {
         // on initialise son brin suivant par le brin n
         g.nxt[nstr+NBA] = str;
     }
-    // Si notre sommet ne possede pas de premier brin
+    // Si notre sommet possede un premier brin
     else {
-         // Si à l'index du premier brin du sommet
+        // Si à l'index du premier brin du sommet
         // on trouve un brin suivant
         if (g.nxt[fstr+NBA].next != 0) {
 
             // On echange le brin suivant du premier brin
             // avec le brin n
-            g.nxt[nstr+NBA] = g.nxt[fstr+5];
+            g.nxt[nstr+NBA] = g.nxt[fstr+NBA];
             g.nxt[fstr+NBA] = str;
 
         } 
