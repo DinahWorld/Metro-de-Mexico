@@ -7,22 +7,21 @@
 
 #include "include/graph.h"
 
-int minDistance(int dist[], bool sptSet[])
-{
+
+int minDistance(int dist[], char sptSet[]){
     // Initialize min value
     int min = 999, min_index = 0;
 
     for (int v = 0; v < NODE; v++){
 
-        if (sptSet[v] == false && dist[v] <= min){
+        if (sptSet[v] == 0 && dist[v] <= min){
             min = dist[v], min_index = v;
         } 
     }
     return min_index;
 }
 // A utility function to print the constructed distance array
-void printSolution(int dist[],int start)
-{
+void printSolution(int dist[],int start){
     FILE* stream = fopen("mexico_station.txt","r");
     char line[1024] = {0};
     char station[163][50] = {0};
@@ -53,24 +52,24 @@ void printSolution(int dist[],int start)
 }
  
 
-void dijkstra(StrGr g,int start){
+void dijkstraForStrand(StrGr g,int start){
     int dist[NODE],fstr,nxtstr,str,node;
     node = 999;
     str = 999;
 
     // Tableau qui nous renvoi true si à l'indice du noeud
     // Le noeud a été visité 
-    bool sptSet[NODE]; 
+    char sptSet[NODE]; 
 
     for(int i = 0; i < NODE;i++){
         dist[i] = 999;
-        sptSet[i] = false;
+        sptSet[i] = 0;
     }
     dist[start] = 0;
     
     for(int count = 0; count < NODE;count++){
         int u =  minDistance(dist, sptSet);
-        sptSet[u] = true;
+        sptSet[u] = 1;
 
         /* Je recupere le premier brin */
         fstr = g.node[u]; 
@@ -97,4 +96,39 @@ void dijkstra(StrGr g,int start){
 
 }
 
+
+void dijkstraForCptMat(MatCpt mat, int start)
+{
+    int dist[NODE]; 
+
+    char sptSet[NODE];
+
+    for (int i = 0; i < NODE; i++)
+        dist[i] = 999, sptSet[i] = 0;
+ 
+    dist[start] = 0;
+ 
+    for (int count = 0; count < NBA - 1; count++) {
+        int u = minDistance(dist, sptSet);
+ 
+        sptSet[u] = 1;
+ 
+        for (int v = 0; v < NBA; v++){
+
+            if(mat.ares[v].i == u){
+                if (!sptSet[mat.ares[v].j] && dist[u] != 999
+                    && dist[u] + mat.ares[v].val < dist[mat.ares[v].j]){
+                        dist[mat.ares[v].j] = dist[u] + mat.ares[v].val;
+                    }
+            }
+            if(mat.ares[v].j == u){
+                if (!sptSet[mat.ares[v].i] && dist[u] != 999
+                    && dist[u] + mat.ares[v].val < dist[mat.ares[v].i]){
+                        dist[mat.ares[v].i] = dist[u] + mat.ares[v].val;
+                    }
+            }
+        }
+    }
+    printSolution(dist,start);
+}
 
