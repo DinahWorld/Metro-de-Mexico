@@ -45,29 +45,10 @@ StrGr assignStrand(StrGr g, int node, int nstr,Shu time) {
     }
     // Si notre sommet possede un premier brin
     else {
-        // Si à l'index du premier brin du sommet
-        // on trouve un brin suivant
-        if (g.nxt[fstr+NBA].next != 0) {
-
-            // On echange le brin suivant du premier brin
-            // avec le brin n
-            g.nxt[nstr+NBA] = g.nxt[fstr+NBA];
-            g.nxt[fstr+NBA] = str;
-
-        } 
-        else {
-            // On crée à l'index du premier brin du sommet
-            // un brin suivant qui correspond au brin n
-            g.nxt[fstr+NBA] = str;
-
-            // On crée un brin suivant qui sera la valeur
-            // du premier brin du sommet à l'index du brin n
-            str.next = fstr;
-            str.node = node;
-            str.time = time;
-            g.nxt[nstr+NBA] = str;
-        }
-
+        // On echange le brin suivant du premier brin
+        // avec le brin n
+        g.nxt[nstr+NBA] = g.nxt[fstr+NBA];
+        g.nxt[fstr+NBA] = str; 
     }
     return g;
 }
