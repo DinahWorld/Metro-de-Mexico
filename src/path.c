@@ -29,7 +29,8 @@ void printPath(Shu * flag, int nbn) {
     printf("\n");
 }
 
-/// Fonction qui affiche notre graphe
+/// Fonction qui affiche notre graphe (ne fonctionne bien que
+///    sur de petit tableau)
 void printStrGraph(StrGr g) {
     int i;
     printf("Tableau des premiers brin\nBrins  ");

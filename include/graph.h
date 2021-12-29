@@ -46,5 +46,7 @@ int minDistance(int dist[], char sptSet[]);
 void printSolution(int dist[],int start);
 void dijkstraForStrand(StrGr g,int start);
 void dijkstraForCptMat(MatCpt mat, int start);
+MatCpt getDataForCompactMatrix();
+StrGr getDataForStrandGraph();
 
 #endif

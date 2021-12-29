@@ -9,17 +9,16 @@
 
 
 int minDistance(int dist[], char sptSet[]){
-    // Initialize min value
     int min = 999, min_index = 0;
 
     for (int v = 0; v < NODE; v++){
-
         if (sptSet[v] == 0 && dist[v] <= min){
             min = dist[v], min_index = v;
-        } 
+        }
     }
     return min_index;
 }
+
 // A utility function to print the constructed distance array
 void printSolution(int dist[],int start){
     FILE* stream = fopen("mexico_station.txt","r");
@@ -56,7 +55,8 @@ void dijkstraForStrand(StrGr g,int start){
     int dist[NODE],fstr,nxtstr,str,node;
     node = 999;
     str = 999;
-
+    int countLoop = 0;
+    int countInsideLoop = 0;
     // Tableau qui nous renvoi true si à l'indice du noeud
     // Le noeud a été visité 
     char sptSet[NODE]; 
@@ -67,10 +67,11 @@ void dijkstraForStrand(StrGr g,int start){
     }
     dist[start] = 0;
     
+    // Dans le meilleurs cas on a une constance en O(N)
     for(int count = 0; count < NODE;count++){
         int u =  minDistance(dist, sptSet);
         sptSet[u] = 1;
-
+        countLoop++;
         /* Je recupere le premier brin */
         fstr = g.node[u]; 
         /* je recupere le brin suivant */
@@ -78,7 +79,11 @@ void dijkstraForStrand(StrGr g,int start){
         
         // On considere que lorsque le brin suivant sera égale au premier brin
         // on a regardé tout les successeur du sommet
+        // Dans le pire cas, on a une complexité en O(N)
+        // si le nombre de successeur était le nombre de noeud totale
+        // dans le meilleur cas O(1) 
         while(fstr != str){
+            countInsideLoop++;
             str = nxtstr;
             // On explore tout les successeur du sommet uniqument
             nxtstr = g.nxt[str + NBA].next;
@@ -92,29 +97,34 @@ void dijkstraForStrand(StrGr g,int start){
         }
     
     }
+    printf("Nombre de boucle extérieur : %d\n",countLoop);
+    printf("Nombre de boucle intérieur : %d\n",countInsideLoop);
     printSolution(dist,start);
 
 }
 
-
-void dijkstraForCptMat(MatCpt mat, int start)
-{
+// Compléxité en O(n²) ou O(n*m) mais étant donnée m que sera toujours plus
+// grand que n on préfera dire O(n²)
+void dijkstraForCptMat(MatCpt mat, int start){
     int dist[NODE]; 
 
     char sptSet[NODE];
-
+    int countLoop = 0;
+    int countInsideLoop = 0;
+    
     for (int i = 0; i < NODE; i++)
         dist[i] = 999, sptSet[i] = 0;
  
     dist[start] = 0;
  
-    for (int count = 0; count < NBA - 1; count++) {
+    for (int count = 0; count < NODE; count++) {
         int u = minDistance(dist, sptSet);
- 
+        countLoop++;
+
         sptSet[u] = 1;
  
         for (int v = 0; v < NBA; v++){
-
+            countInsideLoop++;
             if(mat.ares[v].i == u){
                 if (!sptSet[mat.ares[v].j] && dist[u] != 999
                     && dist[u] + mat.ares[v].val < dist[mat.ares[v].j]){
@@ -129,6 +139,8 @@ void dijkstraForCptMat(MatCpt mat, int start)
             }
         }
     }
+    printf("Nombre de boucle extérieur : %d\n",countLoop);
+    printf("Nombre de boucle intérieur : %d\n",countInsideLoop);
     printSolution(dist,start);
 }
 
