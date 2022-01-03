@@ -18,7 +18,7 @@ void dijkstraForStrand(StrGr g,int start){
     int countLoop = 0;
     int countInsideLoop = 0;
 
-    // Tableau qui nous renvoi true si à l'indice du noeud
+    // Tableau qui nous renvoi 1 si à l'indice du noeud
     // le noeud a été visité 
     char sptSet[NODE]; 
     
@@ -37,6 +37,7 @@ void dijkstraForStrand(StrGr g,int start){
     for(int count = 0; count < NODE;count++){
         //On recupere la plus petite distance des noeud visité
         int u =  minTime(data, sptSet);
+        // indique que le noeud u a été visité
         sptSet[u] = 1;
         countLoop++;
         /* Je recupere le premier brin */
@@ -66,9 +67,11 @@ void dijkstraForStrand(StrGr g,int start){
         
     
     }
-    printf("Nombre de boucle extérieur : %d\n",countLoop);
-    printf("Nombre de boucle intérieur : %d\n",countInsideLoop);
     printSolution(data,start);
+    printf("\n\nNombre de boucle extérieur : %d\n",countLoop);
+    printf("Nombre de boucle intérieur : %d\n",countInsideLoop);
+    printf("Nombre de boucles totale en comptant la boucle de la fonction minTime :\n");
+    printf("%d",countInsideLoop*countLoop);
 
 }
 
@@ -77,7 +80,7 @@ void dijkstraForCptMat(MatCpt mat, int start){
     // Va contenir les informations comme le tps et le plus court successeur d'un noeud   
     Info data[NODE];
 
-    // Tableau qui nous renvoi true si à l'indice du noeud
+    // Tableau qui nous renvoi 1 si à l'indice du noeud
     // le noeud a été visité 
     char sptSet[NODE];
     int countLoop = 0;
@@ -97,9 +100,10 @@ void dijkstraForCptMat(MatCpt mat, int start){
     for (int count = 0; count < NODE; count++) {
         //On recupere la plus petite distance des noeud visité
         int u = minTime(data, sptSet);
+         // indique que le noeud u a été visité
         sptSet[u] = 1;
         countLoop++;
- 
+
         for (int v = 0; v < NBA; v++){
             // On recupere le noeud et le successeur
             int iares = mat.ares[v].i; 
@@ -126,12 +130,13 @@ void dijkstraForCptMat(MatCpt mat, int start){
                     }
             }
         }
-        printf("\n");
-
     }
-    printf("Nombre de boucle extérieur : %d\n",countLoop);
-    printf("Nombre de boucle intérieur : %d\n",countInsideLoop);    
     printSolution(data,start);
+    printf("\n\nNombre de boucle extérieur : %d\n",countLoop);
+    printf("Nombre de boucle intérieur : %d\n",countInsideLoop);
+    printf("Nombre de boucles totale en comptant la boucle de la fonction minTime : ");
+    printf("%d\n",countInsideLoop*countLoop);    
+
 }
 
 
