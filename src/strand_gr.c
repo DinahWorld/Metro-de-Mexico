@@ -16,7 +16,7 @@ StrGr createGraphe(Shu matrix[NBA][VERT], int nbs,int nbstr) {
     // + 1 car on compte aussi le brin 0
     g.nxt = (Strand * ) calloc(1,(g.nbrStr + 1) * sizeof(Strand));
 
-    // Constance O(n)
+    // Compléxité en Temps O(n) n qui correspond aux nombre d'aretes
     for (int i = 0; i < g.edge; i++, nstr++) {
         // La premiere valeur du tableau de la matrice aura 
         // un brin -n

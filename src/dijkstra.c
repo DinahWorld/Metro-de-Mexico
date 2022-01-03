@@ -7,27 +7,164 @@
 
 #include "include/graph.h"
 
+void dijkstraForStrand(StrGr g,int start){
 
-int minDistance(int dist[], char sptSet[]){
+    // Va contenir les informations comme le tps et le plus court successeur d'un noeud   
+    Info data[NODE];            
+    int fstr,nxtstr,str,node; /* variables pour brins */
+    node = 999;
+    str = 999;
+    // Va compter nos boucles
+    int countLoop = 0;
+    int countInsideLoop = 0;
+
+    // Tableau qui nous renvoi true si à l'indice du noeud
+    // le noeud a été visité 
+    char sptSet[NODE]; 
+    
+
+    // Initialisation 
+    for(int i = 0; i < NODE;i++){
+        data[i].time = 999;
+        sptSet[i] = 0;
+    }
+
+    // data[].node nous donne le successeur le plus court d'un noeud
+    // on initialise le noeud de départ à -1
+    data[start].node = -1;
+    data[start].time = 0;
+
+    for(int count = 0; count < NODE;count++){
+        //On recupere la plus petite distance des noeud visité
+        int u =  minTime(data, sptSet);
+        sptSet[u] = 1;
+        countLoop++;
+        /* Je recupere le premier brin */
+        fstr = g.node[u]; 
+        /* je recupere le brin suivant */
+        nxtstr = g.nxt[fstr + NBA].next; 
+        
+        // On considere que lorsque le brin suivant sera égale au premier brin
+        // on a regardé tout les successeur du sommet
+        // Dans le pire cas, on a une complexité en O(N)
+        // si le nombre de successeur était le nombre de noeud totale
+        while(fstr != str){
+            countInsideLoop++;
+            str = nxtstr;
+            // On explore tout les successeur du sommet uniqument
+            nxtstr = g.nxt[str + NBA].next;
+            node = g.nxt[(-nxtstr)+NBA].node;
+            
+            // Condition de l'algorithme de Dijstra
+            if(!sptSet[node] && data[u].time != 999
+            && data[u].time + g.nxt[str + NBA].time < data[node].time){
+                data[node].node = u;
+                data[node].time = data[u].time + g.nxt[str + NBA].time;
+            }
+
+        }
+        
+    
+    }
+    printf("Nombre de boucle extérieur : %d\n",countLoop);
+    printf("Nombre de boucle intérieur : %d\n",countInsideLoop);
+    printSolution(data,start);
+
+}
+
+
+void dijkstraForCptMat(MatCpt mat, int start){
+    // Va contenir les informations comme le tps et le plus court successeur d'un noeud   
+    Info data[NODE];
+
+    // Tableau qui nous renvoi true si à l'indice du noeud
+    // le noeud a été visité 
+    char sptSet[NODE];
+    int countLoop = 0;
+    int countInsideLoop = 0;
+
+    // Initialisation 
+    for (int i = 0; i < NODE; i++){
+        data[i].time = 999;
+        sptSet[i] = 0;
+    }
+    // data[].node nous donnera le successeur le plus court d'un noeud
+    // data[].time nous donnera le temps le plus court pour arriver à un noeud
+    // Initialisation
+    data[start].node = -1;
+    data[start].time = 0;
+ 
+    for (int count = 0; count < NODE; count++) {
+        //On recupere la plus petite distance des noeud visité
+        int u = minTime(data, sptSet);
+        sptSet[u] = 1;
+        countLoop++;
+ 
+        for (int v = 0; v < NBA; v++){
+            // On recupere le noeud et le successeur
+            int iares = mat.ares[v].i; 
+            int jares = mat.ares[v].j; 
+            countInsideLoop++;
+
+            // Etant donné que notre fichier metro n'inclut pas le prédécesseur 
+            // comme son successeur aussi, on vérifie donc i et j
+
+            if(iares == u){
+                // Condition de l'algorithme de Dijstra
+                if (!sptSet[jares] && data[u].time != 999
+                    && data[u].time + mat.ares[v].val < data[jares].time){
+                        data[jares].time = data[u].time + mat.ares[v].val;
+                        data[jares].node = u;
+                    }
+            }
+            if(jares == u){
+                // Condition de l'algorithme de Dijstra
+                if (!sptSet[iares] && data[u].time != 999
+                    && data[u].time + mat.ares[v].val < data[iares].time){
+                        data[iares].time = data[u].time + mat.ares[v].val;
+                        data[iares].node = u;
+                    }
+            }
+        }
+        printf("\n");
+
+    }
+    printf("Nombre de boucle extérieur : %d\n",countLoop);
+    printf("Nombre de boucle intérieur : %d\n",countInsideLoop);    
+    printSolution(data,start);
+}
+
+
+int minTime(Info data[], char sptSet[]){
     int min = 999, min_index = 0;
 
     for (int v = 0; v < NODE; v++){
-        if (sptSet[v] == 0 && dist[v] <= min){
-            min = dist[v], min_index = v;
+        if (sptSet[v] == 0 && data[v].time <= min){
+            min = data[v].time, min_index = v;
         }
     }
     return min_index;
 }
 
-// A utility function to print the constructed distance array
-void printSolution(int dist[],int start){
+// On explore chaque successeur de chaque noeud
+// que l'on explore
+void printPathDijsktra(int path[NODE], int j){
+
+    
+     
+}
+
+void printSolution(Info data[],int start){
     FILE* stream = fopen("mexico_station.txt","r");
     char line[1024] = {0};
     char station[163][50] = {0};
     char* tok = NULL;
+    int selectedDest = 0;
 
-    Shu i = 0;
-    Shu y = 0;
+    /* Je recupere le nom des stations */
+
+    int i = 0;
+    int y = 0;
     while (fgets(line, 1024, stream)){
         char* tmp = strdup(line);
          for (tok = strtok(tmp, "|");tok && *tok;tok = strtok(NULL, "|\n")){
@@ -43,104 +180,33 @@ void printSolution(int dist[],int start){
         free(tmp);
     }
     fclose(stream);
+    
+    /* J'affiche la plus courte durée qu'il faudrait pour acceder 
+                    a chaque station
+    */
+    
 
     printf("Temps depuis :\t Stations\n");
     printf("%s \n",station[start]);
-    for (int i = 0; i <NODE; i++)
-        printf("%d \t\t %s\n",dist[i],station[i]);
+    for (i = 0; i <NODE; i++){
+        printf("%d \t\t %s (%d)\n",data[i].time,station[i],i);
+    }
+
+    /* Demande a l'utilisateur quel chemin veut il voir */
+
+    printf("Vous voulez voir le plus court chemin depuis %d vers quel stations ?\n",start);
+    printf("Entrez un numero correspondant à une station (regardez le fichier metro_station.txt)\n");
+    if( scanf("%d",&selectedDest) != 1) return;
+
+    int j = selectedDest;
+    printf("\nArrivé  = ");
+    while(data[j].node != - 1){
+        printf("%s <-- %d min -- ", station[j],data[j].time);
+        j = data[j].node; 
+    }
+    printf("%s = Depart",station[start]);
+
+
 }
  
-
-void dijkstraForStrand(StrGr g,int start){
-    int dist[NODE],fstr,nxtstr,str,node;
-    node = 999;
-    str = 999;
-    int countLoop = 0;
-    int countInsideLoop = 0;
-    // Tableau qui nous renvoi true si à l'indice du noeud
-    // Le noeud a été visité 
-    char sptSet[NODE]; 
-
-    for(int i = 0; i < NODE;i++){
-        dist[i] = 999;
-        sptSet[i] = 0;
-    }
-    dist[start] = 0;
-    
-    // Dans le meilleurs cas on a une constance en O(N)
-    for(int count = 0; count < NODE;count++){
-        int u =  minDistance(dist, sptSet);
-        sptSet[u] = 1;
-        countLoop++;
-        /* Je recupere le premier brin */
-        fstr = g.node[u]; 
-        /* je recupere le brin suivant */
-        nxtstr = g.nxt[fstr + NBA].next; 
-        
-        // On considere que lorsque le brin suivant sera égale au premier brin
-        // on a regardé tout les successeur du sommet
-        // Dans le pire cas, on a une complexité en O(N)
-        // si le nombre de successeur était le nombre de noeud totale
-        // dans le meilleur cas O(1) 
-        while(fstr != str){
-            countInsideLoop++;
-            str = nxtstr;
-            // On explore tout les successeur du sommet uniqument
-            nxtstr = g.nxt[str + NBA].next;
-            node = g.nxt[(-nxtstr)+NBA].node;
-
-            if(!sptSet[node] && dist[u] != 999
-            && dist[u] + g.nxt[str + NBA].time < dist[node]){
-                dist[node] = dist[u] + g.nxt[str + NBA].time;
-            }
-
-        }
-    
-    }
-    printf("Nombre de boucle extérieur : %d\n",countLoop);
-    printf("Nombre de boucle intérieur : %d\n",countInsideLoop);
-    printSolution(dist,start);
-
-}
-
-// Compléxité en O(n²) ou O(n*m) mais étant donnée m que sera toujours plus
-// grand que n on préfera dire O(n²)
-void dijkstraForCptMat(MatCpt mat, int start){
-    int dist[NODE]; 
-
-    char sptSet[NODE];
-    int countLoop = 0;
-    int countInsideLoop = 0;
-    
-    for (int i = 0; i < NODE; i++)
-        dist[i] = 999, sptSet[i] = 0;
- 
-    dist[start] = 0;
- 
-    for (int count = 0; count < NODE; count++) {
-        int u = minDistance(dist, sptSet);
-        countLoop++;
-
-        sptSet[u] = 1;
- 
-        for (int v = 0; v < NBA; v++){
-            countInsideLoop++;
-            if(mat.ares[v].i == u){
-                if (!sptSet[mat.ares[v].j] && dist[u] != 999
-                    && dist[u] + mat.ares[v].val < dist[mat.ares[v].j]){
-                        dist[mat.ares[v].j] = dist[u] + mat.ares[v].val;
-                    }
-            }
-            if(mat.ares[v].j == u){
-                if (!sptSet[mat.ares[v].i] && dist[u] != 999
-                    && dist[u] + mat.ares[v].val < dist[mat.ares[v].i]){
-                        dist[mat.ares[v].i] = dist[u] + mat.ares[v].val;
-                    }
-            }
-        }
-    }
-    printf("Nombre de boucle extérieur : %d\n",countLoop);
-    printf("Nombre de boucle intérieur : %d\n",countInsideLoop);
-    printSolution(dist,start);
-}
 

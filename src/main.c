@@ -17,14 +17,20 @@
 
 
 int main(void) {
+    int src = 0;
+    printf("Vous voulez le plus court chemin depuis quel stations ?\n");
 
-    printf("\n\n\t\tDijkstra pour un graphe avec une structure 'Matrice Compacte'\n\n");
-    MatCpt cpt_matrix = getDataForCompactMatrix();
-    dijkstraForCptMat(cpt_matrix,0);
+    if( scanf("%d", &src) != 1 )
+        return 0;
 
     printf("\n\n\t\tDijkstra pour un graphe avec une structure 'Brins'\n\n");
     StrGr g = getDataForStrandGraph();
-    dijkstraForStrand(g,0);
+    dijkstraForStrand(g,src);
+
+    printf("\n\n\t\tDijkstra pour un graphe avec une structure 'Matrice Compacte'\n\n");
+    MatCpt cpt_matrix = getDataForCompactMatrix();
+    dijkstraForCptMat(cpt_matrix,src);
+
 
     free(cpt_matrix.ares);
     free(g.node);

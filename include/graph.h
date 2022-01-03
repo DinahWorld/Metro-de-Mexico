@@ -11,7 +11,6 @@ struct Strand {
     Shu time;
 };
 typedef struct Strand Strand;
-
 struct StrandGraph {
     Shu timeCount;
     Shu nbs;
@@ -34,6 +33,16 @@ struct CompactMatrix{
 };
 typedef struct CompactMatrix MatCpt;
 
+// Structure qui va contenir les informations 
+// comme le temps que met un noeud pour atteindre node
+// et le temps
+struct Info {
+    int time;
+    int node;
+};
+typedef struct Info Info;
+
+/* Il faudrait que je crée plusieurs fichier.h */
 
 StrGr createGraphe(Shu matrix[NBA][VERT], int nbs,int nbstr);
 StrGr assignStrand(StrGr g, int node, int nstr,Shu time);
@@ -42,8 +51,9 @@ int strandPath(Shu dep, Shu arr, StrGr g, Shu flag[], int nba);
 void printPath(Shu * flag, int nbn);
 void printStrGraph(StrGr g);
 void seegr(StrGr g);
-int minDistance(int dist[], char sptSet[]);
-void printSolution(int dist[],int start);
+int minTime(Info data[], char sptSet[]);
+void printSolution(Info data[],int start);
+void printPathDijsktra(int parent[NODE], int j);
 void dijkstraForStrand(StrGr g,int start);
 void dijkstraForCptMat(MatCpt mat, int start);
 MatCpt getDataForCompactMatrix();
