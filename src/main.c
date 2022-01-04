@@ -17,11 +17,14 @@
 
 
 int main(void) {
-    int src = 0;
+    int src = -1;
     printf("Vous voulez le plus court chemin depuis quel stations ?\n");
 
-    if( scanf("%d", &src) != 1 )
-        return 0;
+    while (src < 0 || src > NODE){
+        printf("Entrez un numéro de station valide !\n");
+        if( scanf("%d", &src) != 1 )
+            return 0;
+    }
 
     printf("\n\n\t\tDijkstra pour un graphe avec une structure 'Brins'\n\n");
     StrGr g = getDataForStrandGraph();

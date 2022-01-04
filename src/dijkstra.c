@@ -7,6 +7,7 @@
 
 #include "include/graph.h"
 
+// Time Complexity = O(V+E+V))
 void dijkstraForStrand(StrGr g,int start){
 
     // Va contenir les informations comme le tps et le plus court successeur d'un noeud   
@@ -35,7 +36,7 @@ void dijkstraForStrand(StrGr g,int start){
     data[start].time = 0;
 
     for(int count = 0; count < NODE;count++){
-        //On recupere la plus petite distance des noeud visité
+        //On recupere la plus petite durée des noeud visité
         int u =  minTime(data, sptSet);
         // indique que le noeud u a été visité
         sptSet[u] = 1;
@@ -47,8 +48,6 @@ void dijkstraForStrand(StrGr g,int start){
         
         // On considere que lorsque le brin suivant sera égale au premier brin
         // on a regardé tout les successeur du sommet
-        // Dans le pire cas, on a une complexité en O(N)
-        // si le nombre de successeur était le nombre de noeud totale
         while(fstr != str){
             countInsideLoop++;
             str = nxtstr;
@@ -62,20 +61,17 @@ void dijkstraForStrand(StrGr g,int start){
                 data[node].node = u;
                 data[node].time = data[u].time + g.nxt[str + NBA].time;
             }
-
         }
-        
     
     }
     printSolution(data,start);
     printf("\n\nNombre de boucle extérieur : %d\n",countLoop);
-    printf("Nombre de boucle intérieur : %d\n",countInsideLoop);
+    printf("Nombre de boucle intérieur (pour la recherche du successeur) : %d\n",countInsideLoop);
     printf("Nombre de boucles totale en comptant la boucle de la fonction minTime :\n");
-    printf("%d",countInsideLoop*countLoop);
-
+    printf("\nTime Complexity = O((V*2)+E) dans notre cas V = 122 et E = 270 : %d\n",countLoop+countInsideLoop+NODE);
 }
 
-
+// Time Complexity = O(V*(V+E))
 void dijkstraForCptMat(MatCpt mat, int start){
     // Va contenir les informations comme le tps et le plus court successeur d'un noeud   
     Info data[NODE];
@@ -133,9 +129,9 @@ void dijkstraForCptMat(MatCpt mat, int start){
     }
     printSolution(data,start);
     printf("\n\nNombre de boucle extérieur : %d\n",countLoop);
-    printf("Nombre de boucle intérieur : %d\n",countInsideLoop);
+    printf("Nombre de boucle intérieur (pour la recherche du successeur) : %d\n",countInsideLoop);
     printf("Nombre de boucles totale en comptant la boucle de la fonction minTime : ");
-    printf("%d\n",countInsideLoop*countLoop);    
+    printf("\nTime Complexity = O(V*(V+E)) dans notre cas V = 122 et E = 135 : %d\n",NODE + countInsideLoop);    
 
 }
 
@@ -144,8 +140,9 @@ int minTime(Info data[], char sptSet[]){
     int min = 999, min_index = 0;
 
     for (int v = 0; v < NODE; v++){
-        if (sptSet[v] == 0 && data[v].time <= min){
-            min = data[v].time, min_index = v;
+        if (sptSet[v] == 0 && data[v].time < min){
+            min = data[v].time;
+            min_index = v;
         }
     }
     return min_index;
@@ -164,7 +161,7 @@ void printSolution(Info data[],int start){
     char line[1024] = {0};
     char station[163][50] = {0};
     char* tok = NULL;
-    int selectedDest = 0;
+    int selectedDest = -1;
 
     /* Je recupere le nom des stations */
 
@@ -194,17 +191,24 @@ void printSolution(Info data[],int start){
     printf("Temps depuis :\t Stations\n");
     printf("%s \n",station[start]);
     for (i = 0; i <NODE; i++){
-        printf("%d \t\t %s (%d)\n",data[i].time,station[i],i);
+        printf("%d min \t\t %s (%d)\n",data[i].time,station[i],i);
     }
 
     /* Demande a l'utilisateur quel chemin veut il voir */
 
     printf("Vous voulez voir le plus court chemin depuis %d vers quel stations ?\n",start);
     printf("Entrez un numero correspondant à une station (regardez le fichier metro_station.txt)\n");
-    if( scanf("%d",&selectedDest) != 1) return;
+    while (selectedDest < 0 || selectedDest > NODE){
+        printf("Entrez un numéro de station valide !\n");
+        if( scanf("%d", &selectedDest) != 1 ) return;
+    }
 
+    // On regarde le predecesseur du noeud
+    // a chaque boucle 
     int j = selectedDest;
     printf("\nArrivé  = ");
+    // Si la variable est egale a -1
+    // alors on est arrivé au debut
     while(data[j].node != - 1){
         printf("%s <-- %d min -- ", station[j],data[j].time);
         j = data[j].node; 
