@@ -10,7 +10,6 @@ StrGr createGraphe(Shu matrix[NBA][VERT], int nbs,int nbstr) {
 
     //on commence a partir de brin 1
     int nstr = 1;
-
     // Allocations de la mémoire
     g.node = (short * ) calloc(1,g.nbs * sizeof(short));
     // + 1 car on compte aussi le brin 0

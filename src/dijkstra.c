@@ -9,8 +9,8 @@
 
 // Time Complexity = O(V+E+V))
 void dijkstraForStrand(StrGr g,int start){
-
-    // Va contenir les informations comme le tps et le plus court successeur d'un noeud   
+    // Va contenir les informations comme le tps et 
+    // le plus court successeur d'un noeud   
     Info data[NODE];            
     int fstr,nxtstr,str,node; /* variables pour brins */
     node = 999;
@@ -22,14 +22,12 @@ void dijkstraForStrand(StrGr g,int start){
     // Tableau qui nous renvoi 1 si à l'indice du noeud
     // le noeud a été visité 
     char sptSet[NODE]; 
-    
 
     // Initialisation 
     for(int i = 0; i < NODE;i++){
         data[i].time = 999;
         sptSet[i] = 0;
     }
-
     // data[].node nous donne le successeur le plus court d'un noeud
     // on initialise le noeud de départ à -1
     data[start].node = -1;
