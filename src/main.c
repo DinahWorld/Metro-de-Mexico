@@ -40,22 +40,3 @@ int main(void) {
     free(g.nxt);
     return 0;
 }
-
-/**
- * @brief Pourquoi utiliser Brins ?
- * L'avantage de Brins pour l'instant, c'est que on peut acceder directement au 
- * successeur d'un noeud grâce aux systeme de brin, ça nous évite de faire une boucle
- * afin de vérifier si telle noeud est successeur de du noeud qu'on visite
- * Elle prend beaucoup moins qu'une simple matrice
- * 
- * Conclusion : 
- * Le parcours est tres rapide (je pense c'est une complexité en N Log(n) mais pas sur)
- * Mais Cela prend enormement de mémoire (une arrete = 2 brin du coup il faut dra reserver 2 fois
- * le nombre d'arete en mémoire)
- */
-
-/**
- * @brief Pourquoi utiliser Matrice Compacte
- * La raison principale est pour le stockage, et pour le temps d'execution,
- * on ignorera les 0 
- */

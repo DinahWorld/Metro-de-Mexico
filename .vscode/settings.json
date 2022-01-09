@@ -1,8 +1,10 @@
 {
-    "files.associations": {
-        "graph.h": "c",
-        "stdlib.h": "c",
-        "stdbool.h": "c"
-    },
-    "cmake.configureOnOpen": false
+	"files.associations": {
+		"graph.h": "c",
+		"stdlib.h": "c",
+		"stdbool.h": "c"
+	},
+	"cmake.configureOnOpen": false,
+	"codesnap.transparentBackground": true,
+	"codesnap.showWindowTitle": true
 }
