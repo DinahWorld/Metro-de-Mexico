@@ -12,7 +12,6 @@ struct Strand {
 };
 typedef struct Strand Strand;
 struct StrandGraph {
-    Shu timeCount;
     Shu nbs;
     Shu nbrStr;
     Shu edge;   /* aretes */

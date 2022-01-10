@@ -6,7 +6,7 @@
 
 /// Fonction pour créer un Graphe avec Brins
 StrGr createGraphe(Shu matrix[NBA][VERT], int nbs,int nbstr) {
-    StrGr g = {0,nbs,nbstr,NBA,NULL,NULL};
+    StrGr g = {nbs,nbstr,NBA,NULL,NULL};
 
     //on commence a partir de brin 1
     int nstr = 1;
