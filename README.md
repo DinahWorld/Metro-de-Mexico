@@ -16,3 +16,6 @@ Gérer un réseau de transports en commun, via un graphe (Système à brins et M
 make
 ./Metro_de_Mexico
 ```
+
+
+PS : Copiez bien et faîtes vous pas cramer (pk avoir pris Brins srx)
